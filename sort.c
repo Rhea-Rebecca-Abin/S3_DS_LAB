@@ -1,34 +1,33 @@
-//Representing polynomial using linked list
 #include<stdio.h>
 #include <stdlib.h>
 struct node{
-     float coef;
-     int expon;
+    
+     int data;
      struct node* next;
 };
 
-struct node* insert(struct node*,float,int);
+struct node* insert(struct node*,int);
 struct node * create(struct node*);
 void print(struct node*);
 
 
 
  
-struct node* insert(struct node* head, float co,int ex){
+struct node* insert(struct node* head,int data){
         struct node* temp;    
         struct node* newnode=malloc(sizeof(struct node));
-        newnode->coef=co;
-        newnode->expon=ex;
+        
+        newnode->data=data;
         newnode->next=NULL;
         
-        if (head == NULL || ex > head->expon)
+        if (head == NULL || data < head->data)
         {     
          newnode->next=head;
          head=newnode;}
          
          else{
             temp=head;
-            while(temp->next !=NULL && temp->next->expon >= ex)
+            while(temp->next !=NULL && temp->next->data <=data)
                         temp=temp->next;
             
              newnode->next=temp->next;
@@ -39,19 +38,33 @@ struct node* insert(struct node* head, float co,int ex){
           }
 struct node* create(struct node* head){
       int n;
-      float coefficient;
-      int exponent;
+      //float coefficient;
+      int data;
       printf("Enter no of terms:");
       scanf("%d",&n);
       for (int i=0;i<n;i++){
-             printf("Enter coefficient for term %d:",i+1);
-             scanf("%f",&coefficient);
-             printf("ENter exponent for term %d:",i+1);
-             scanf("%d",&exponent);
-             head=insert(head,coefficient,exponent);
+             printf("Enter data:");
+             
+             scanf("%d",&data);
+             head=insert(head,data);
       }
       return head;}
-        
+struct node* search(struct node* head,int data){   
+         struct node* temp=head;
+         int count=0,flag=0;
+         while(temp!=NULL){
+              count ++;
+              if (temp->data ==data){
+                      printf("\nFound");
+                      flag=1;
+                      printf("%d",count);
+                      break;}
+              temp=temp->next;}
+              if (flag==0){printf("Not found");}
+         return head;}
+
+
+     
 void print(struct node* head){
    
       if (head ==NULL){
@@ -60,10 +73,10 @@ void print(struct node* head){
           {
            struct node* temp=head;
            while (temp!=NULL){
-                   printf("%.1fx^%d",temp->coef,temp->expon);
+                   printf("%d->",temp->data);
                    temp=temp->next;
                    if (temp !=NULL)
-                        printf(" + ");
+                        printf(" -> ");
                    else
                       printf("\n");
                       }}}
@@ -73,8 +86,12 @@ void print(struct node* head){
 void main(){
 
 struct node* head=NULL;
-printf("\nEnter the polynomial:\n");
+int data;
+
 head=create(head);
 printf("\nCreation successful\n");
 print(head);
+printf("Enter data search");
+scanf("%d",&data);
+head=search(head,data);
 }
